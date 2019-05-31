@@ -4,16 +4,22 @@ service:
   # awsKmsKeyArn: arn:aws:kms:us-east-1:209826661801:key/b73e9471-cb3f-4ad6-b631-76f17d1979bd
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-domain-manager
   - serverless-express
+  - serverless-offline
 
 custom:
   customDomain:
     domainName: apsls.carsome.my
     basePath: "(none)"
+    # stage: ${env:STAGE}
     stage: ${self:provider.stage}
     certificateName: "apsls.carsome.my"
     createRoute53Record: true
+    # dotenv:
+    #   path: ./.env
+    #   basePath: ./
 
 package:
   exclude:
@@ -24,7 +30,8 @@ package:
 provider:
   name: aws
   runtime: nodejs8.10
-  region: ap-southeast-1
+  region: ${env:AWS_REGION}
+  # region: ap-southeast-1
 
 webpackIncludeModules:
   forceInclude:
@@ -33,15 +40,21 @@ webpackIncludeModules:
     - sequelize
 
 functions:
-  hello:
-    handler: handler.hello
+  pokemonFunc:
+    handler: index.handler
     events:
       - http:
-          path: hello
+          path: pokemon
           method: get
-  world:
-    handler: handler.world
-    events:
       - http:
-          path: world
+          path: pokemon/{id}
           method: get
+      - http:
+          path: pokemon
+          method: post
+      - http:
+          path: pokemon/{id}
+          method: put
+      - http:
+          path: pokemon/{id}
+          method: delete
