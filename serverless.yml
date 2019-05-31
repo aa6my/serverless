@@ -1,0 +1,47 @@
+service:
+  name: api-diff
+  awsKmsKeyArn: arn:aws:kms:ap-southeast-1:209826661801:key/f204d1be-4b43-4759-afbd-4a5218401ffa
+  # awsKmsKeyArn: arn:aws:kms:us-east-1:209826661801:key/b73e9471-cb3f-4ad6-b631-76f17d1979bd
+
+plugins:
+  - serverless-domain-manager
+  - serverless-express
+
+custom:
+  customDomain:
+    domainName: apsls.carsome.my
+    basePath: "(none)"
+    stage: ${self:provider.stage}
+    certificateName: "apsls.carsome.my"
+    createRoute53Record: true
+
+package:
+  exclude:
+    - node_modules
+  include:
+    - dist
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: ap-southeast-1
+
+webpackIncludeModules:
+  forceInclude:
+    - mysql
+    - mysql2
+    - sequelize
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: hello
+          method: get
+  world:
+    handler: handler.world
+    events:
+      - http:
+          path: world
+          method: get

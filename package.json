@@ -1,0 +1,11 @@
+{
+  "name": "aws-carsome",
+  "version": "1.0.0",
+  "description": "Example demonstrates how to setup a simple HTTP GET endpoint",
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "serverless-domain-manager": "^3.2.2",
+    "serverless-express": "^2.0.11"
+  }
+}
