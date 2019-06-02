@@ -1,25 +1,23 @@
 service:
-  name: api-diff
+  name: api-test
   awsKmsKeyArn: arn:aws:kms:ap-southeast-1:209826661801:key/f204d1be-4b43-4759-afbd-4a5218401ffa
   # awsKmsKeyArn: arn:aws:kms:us-east-1:209826661801:key/b73e9471-cb3f-4ad6-b631-76f17d1979bd
 
 plugins:
-  - serverless-dotenv-plugin
-  - serverless-domain-manager
-  - serverless-express
   - serverless-offline
+  - serverless-dotenv-plugin
 
 custom:
   customDomain:
-    domainName: apsls.carsome.my
+    domainName: ${env:DOMAIN_NAME}
     basePath: "(none)"
-    # stage: ${env:STAGE}
-    stage: ${self:provider.stage}
+    stage: ${env:STAGE}
     certificateName: "apsls.carsome.my"
     createRoute53Record: true
-    # dotenv:
-    #   path: ./.env
-    #   basePath: ./
+    envFiles: #YAML files used to create .env file
+      - env.yml
+    envEncryptionKeyId: #KMS Key used for encrypting values
+      dev: ${env:AWS_KMS_KEYID} #Key used for development-stage
 
 package:
   exclude:
@@ -30,8 +28,7 @@ package:
 provider:
   name: aws
   runtime: nodejs8.10
-  region: ${env:AWS_REGION}
-  # region: ap-southeast-1
+  region: ${env:AWS_ZONE}
 
 webpackIncludeModules:
   forceInclude:

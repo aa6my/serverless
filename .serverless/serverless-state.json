@@ -1,8 +1,8 @@
 {
   "service": {
-    "service": "api-diff",
+    "service": "api-test",
     "serviceObject": {
-      "name": "api-diff",
+      "name": "api-test",
       "awsKmsKeyArn": "arn:aws:kms:ap-southeast-1:209826661801:key/f204d1be-4b43-4759-afbd-4a5218401ffa"
     },
     "provider": {
@@ -14,13 +14,15 @@
       "versionFunctions": true,
       "remoteFunctionData": null,
       "environment": {
-        "SERVERLESS_EXPRESS_PLATFORM": "aws",
-        "ENDPOINT": "52.221.190.105",
-        "DATABASE": "carsome_v3_my_kimi",
-        "USERNAME": "root",
-        "PASSWORD": "Carsome123!",
-        "STAGE": "prod",
-        "AWS_REGION": "ap-southeast-1"
+        "DB_HOST": "52.221.190.105",
+        "DB_USER": "root",
+        "DB_PASSWORD": "Carsome123!",
+        "DB_NAME": "carsome_v3_my_kimi",
+        "DB_PORT": "3306",
+        "STAGE": "dev",
+        "AWS_ZONE": "ap-southeast-1",
+        "DOMAIN_NAME": "apsls.carsome.my",
+        "AWS_KMS_KEYID": "f204d1be-4b43-4759-afbd-4a5218401ffa"
       },
       "compiledCloudFormationTemplate": {
         "AWSTemplateFormatVersion": "2010-09-09",
@@ -40,16 +42,10 @@
               }
             }
           },
-          "HelloLogGroup": {
+          "PokemonFuncLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/api-diff-dev-hello"
-            }
-          },
-          "WorldLogGroup": {
-            "Type": "AWS::Logs::LogGroup",
-            "Properties": {
-              "LogGroupName": "/aws/lambda/api-diff-dev-world"
+              "LogGroupName": "/aws/lambda/api-test-dev-pokemonFunc"
             }
           },
           "IamRoleLambdaExecution": {
@@ -78,7 +74,7 @@
                       "-",
                       [
                         "dev",
-                        "api-diff",
+                        "api-test",
                         "lambda"
                       ]
                     ]
@@ -93,10 +89,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-diff-dev-hello:*"
-                          },
-                          {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-diff-dev-world:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-test-dev-pokemonFunc:*"
                           }
                         ]
                       },
@@ -107,10 +100,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-diff-dev-hello:*:*"
-                          },
-                          {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-diff-dev-world:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-test-dev-pokemonFunc:*:*"
                           }
                         ]
                       },
@@ -132,7 +122,7 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "api-diff",
+                    "api-test",
                     "dev",
                     {
                       "Ref": "AWS::Region"
@@ -143,17 +133,17 @@
               }
             }
           },
-          "HelloLambdaFunction": {
+          "PokemonFuncLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
               "Code": {
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/api-diff/dev/1559293903473-2019-05-31T09:11:43.473Z/api-diff.zip"
+                "S3Key": "serverless/api-test/dev/1559461728105-2019-06-02T07:48:48.105Z/api-test.zip"
               },
-              "FunctionName": "api-diff-dev-hello",
-              "Handler": "handler.hello",
+              "FunctionName": "api-test-dev-pokemonFunc",
+              "Handler": "index.handler",
               "MemorySize": 1024,
               "Role": {
                 "Fn::GetAtt": [
@@ -166,83 +156,37 @@
               "KmsKeyArn": "arn:aws:kms:ap-southeast-1:209826661801:key/f204d1be-4b43-4759-afbd-4a5218401ffa",
               "Environment": {
                 "Variables": {
-                  "SERVERLESS_EXPRESS_PLATFORM": "aws",
-                  "ENDPOINT": "52.221.190.105",
-                  "DATABASE": "carsome_v3_my_kimi",
-                  "USERNAME": "root",
-                  "PASSWORD": "Carsome123!",
-                  "STAGE": "prod",
-                  "AWS_REGION": "ap-southeast-1"
+                  "DB_HOST": "52.221.190.105",
+                  "DB_USER": "root",
+                  "DB_PASSWORD": "Carsome123!",
+                  "DB_NAME": "carsome_v3_my_kimi",
+                  "DB_PORT": "3306",
+                  "STAGE": "dev",
+                  "AWS_ZONE": "ap-southeast-1",
+                  "DOMAIN_NAME": "apsls.carsome.my",
+                  "AWS_KMS_KEYID": "f204d1be-4b43-4759-afbd-4a5218401ffa"
                 }
               }
             },
             "DependsOn": [
-              "HelloLogGroup",
+              "PokemonFuncLogGroup",
               "IamRoleLambdaExecution"
             ]
           },
-          "HelloLambdaVersionRvourncQeGBtGj9WHgkWukvgmP4AS1rqx9AlHYqYA": {
+          "PokemonFuncLambdaVersiont2X9fhuXumuJfr78fmf6t2wYOHsfgiVFkQaaJ6lkFCQ": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
-                "Ref": "HelloLambdaFunction"
+                "Ref": "PokemonFuncLambdaFunction"
               },
-              "CodeSha256": "9eUScnMDDKMFi/m3w/hUUKYfNfv3tC1WUXobjUtd6Bs="
-            }
-          },
-          "WorldLambdaFunction": {
-            "Type": "AWS::Lambda::Function",
-            "Properties": {
-              "Code": {
-                "S3Bucket": {
-                  "Ref": "ServerlessDeploymentBucket"
-                },
-                "S3Key": "serverless/api-diff/dev/1559293903473-2019-05-31T09:11:43.473Z/api-diff.zip"
-              },
-              "FunctionName": "api-diff-dev-world",
-              "Handler": "handler.world",
-              "MemorySize": 1024,
-              "Role": {
-                "Fn::GetAtt": [
-                  "IamRoleLambdaExecution",
-                  "Arn"
-                ]
-              },
-              "Runtime": "nodejs8.10",
-              "Timeout": 6,
-              "KmsKeyArn": "arn:aws:kms:ap-southeast-1:209826661801:key/f204d1be-4b43-4759-afbd-4a5218401ffa",
-              "Environment": {
-                "Variables": {
-                  "SERVERLESS_EXPRESS_PLATFORM": "aws",
-                  "ENDPOINT": "52.221.190.105",
-                  "DATABASE": "carsome_v3_my_kimi",
-                  "USERNAME": "root",
-                  "PASSWORD": "Carsome123!",
-                  "STAGE": "prod",
-                  "AWS_REGION": "ap-southeast-1"
-                }
-              }
-            },
-            "DependsOn": [
-              "WorldLogGroup",
-              "IamRoleLambdaExecution"
-            ]
-          },
-          "WorldLambdaVersionOPep3qMNhox9z5Fc9yBMThc3v2VNdVihPCPMozLf8U": {
-            "Type": "AWS::Lambda::Version",
-            "DeletionPolicy": "Retain",
-            "Properties": {
-              "FunctionName": {
-                "Ref": "WorldLambdaFunction"
-              },
-              "CodeSha256": "9eUScnMDDKMFi/m3w/hUUKYfNfv3tC1WUXobjUtd6Bs="
+              "CodeSha256": "6ygJ45wWYb3ejNEfN7INLQT6trraz+ODi3RA/uIdLWQ="
             }
           },
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
-              "Name": "dev-api-diff",
+              "Name": "dev-api-test",
               "EndpointConfiguration": {
                 "Types": [
                   "EDGE"
@@ -250,7 +194,7 @@
               }
             }
           },
-          "ApiGatewayResourceHello": {
+          "ApiGatewayResourcePokemon": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
               "ParentId": {
@@ -259,34 +203,31 @@
                   "RootResourceId"
                 ]
               },
-              "PathPart": "hello",
+              "PathPart": "pokemon",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
             }
           },
-          "ApiGatewayResourceWorld": {
+          "ApiGatewayResourcePokemonIdVar": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
               "ParentId": {
-                "Fn::GetAtt": [
-                  "ApiGatewayRestApi",
-                  "RootResourceId"
-                ]
+                "Ref": "ApiGatewayResourcePokemon"
               },
-              "PathPart": "world",
+              "PathPart": "{id}",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
             }
           },
-          "ApiGatewayMethodHelloGet": {
+          "ApiGatewayMethodPokemonGet": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "GET",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourceHello"
+                "Ref": "ApiGatewayResourcePokemon"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -295,7 +236,7 @@
               "AuthorizationType": "NONE",
               "Integration": {
                 "IntegrationHttpMethod": "POST",
-                "Type": "AWS",
+                "Type": "AWS_PROXY",
                 "Uri": {
                   "Fn::Join": [
                     "",
@@ -311,132 +252,25 @@
                       ":lambda:path/2015-03-31/functions/",
                       {
                         "Fn::GetAtt": [
-                          "HelloLambdaFunction",
+                          "PokemonFuncLambdaFunction",
                           "Arn"
                         ]
                       },
                       "/invocations"
                     ]
                   ]
-                },
-                "PassthroughBehavior": "NEVER",
-                "RequestTemplates": {
-                  "application/json": "\n    #set( $body = $input.json(\"$\") )\n\n    \n  #define( $loop )\n    {\n    #foreach($key in $map.keySet())\n        #set( $k = $util.escapeJavaScript($key) )\n        #set( $v = $util.escapeJavaScript($map.get($key)).replaceAll(\"\\\\'\", \"'\") )\n        \"$k\":\n          \"$v\"\n          #if( $foreach.hasNext ) , #end\n    #end\n    }\n  #end\n\n  {\n    \"body\": $body,\n    \"method\": \"$context.httpMethod\",\n    \"principalId\": \"$context.authorizer.principalId\",\n    \"stage\": \"$context.stage\",\n\n    \"cognitoPoolClaims\" : {\n       \n       \"sub\": \"$context.authorizer.claims.sub\"\n    },\n\n    #set( $map = $context.authorizer )\n    \"enhancedAuthContext\": $loop,\n\n    #set( $map = $input.params().header )\n    \"headers\": $loop,\n\n    #set( $map = $input.params().querystring )\n    \"query\": $loop,\n\n    #set( $map = $input.params().path )\n    \"path\": $loop,\n\n    #set( $map = $context.identity )\n    \"identity\": $loop,\n\n    #set( $map = $stageVariables )\n    \"stageVariables\": $loop\n  }\n\n  ",
-                  "application/x-www-form-urlencoded": "\n    #define( $body )\n      {\n      #foreach( $token in $input.path('$').split('&') )\n        #set( $keyVal = $token.split('=') )\n        #set( $keyValSize = $keyVal.size() )\n        #if( $keyValSize >= 1 )\n          #set( $key = $util.escapeJavaScript($util.urlDecode($keyVal[0])) )\n          #if( $keyValSize >= 2 )\n            #set($val = $util.escapeJavaScript($util.urlDecode($keyVal[1])).replaceAll(\"\\\\'\",\"'\"))\n          #else\n            #set( $val = '' )\n          #end\n          \"$key\": \"$val\"#if($foreach.hasNext),#end\n        #end\n      #end\n      }\n    #end\n\n    \n  #define( $loop )\n    {\n    #foreach($key in $map.keySet())\n        #set( $k = $util.escapeJavaScript($key) )\n        #set( $v = $util.escapeJavaScript($map.get($key)).replaceAll(\"\\\\'\", \"'\") )\n        \"$k\":\n          \"$v\"\n          #if( $foreach.hasNext ) , #end\n    #end\n    }\n  #end\n\n  {\n    \"body\": $body,\n    \"method\": \"$context.httpMethod\",\n    \"principalId\": \"$context.authorizer.principalId\",\n    \"stage\": \"$context.stage\",\n\n    \"cognitoPoolClaims\" : {\n       \n       \"sub\": \"$context.authorizer.claims.sub\"\n    },\n\n    #set( $map = $context.authorizer )\n    \"enhancedAuthContext\": $loop,\n\n    #set( $map = $input.params().header )\n    \"headers\": $loop,\n\n    #set( $map = $input.params().querystring )\n    \"query\": $loop,\n\n    #set( $map = $input.params().path )\n    \"path\": $loop,\n\n    #set( $map = $context.identity )\n    \"identity\": $loop,\n\n    #set( $map = $stageVariables )\n    \"stageVariables\": $loop\n  }\n\n  "
-                },
-                "IntegrationResponses": [
-                  {
-                    "StatusCode": 200,
-                    "SelectionPattern": "",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 400,
-                    "SelectionPattern": "[\\s\\S]*\\[400\\][\\s\\S]*",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 401,
-                    "SelectionPattern": "[\\s\\S]*\\[401\\][\\s\\S]*",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 403,
-                    "SelectionPattern": "[\\s\\S]*\\[403\\][\\s\\S]*",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 404,
-                    "SelectionPattern": "[\\s\\S]*\\[404\\][\\s\\S]*",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 422,
-                    "SelectionPattern": "[\\s\\S]*\\[422\\][\\s\\S]*",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 500,
-                    "SelectionPattern": "[\\s\\S]*(Process\\s?exited\\s?before\\s?completing\\s?request|\\[500\\])[\\s\\S]*",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 502,
-                    "SelectionPattern": "[\\s\\S]*\\[502\\][\\s\\S]*",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 504,
-                    "SelectionPattern": "([\\s\\S]*\\[504\\][\\s\\S]*)|(^[Task timed out].*)",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  }
-                ]
-              },
-              "MethodResponses": [
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 200
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 400
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 401
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 403
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 404
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 422
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 500
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 502
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 504
                 }
-              ]
+              },
+              "MethodResponses": []
             }
           },
-          "ApiGatewayMethodWorldGet": {
+          "ApiGatewayMethodPokemonIdVarGet": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "GET",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourceWorld"
+                "Ref": "ApiGatewayResourcePokemonIdVar"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -445,7 +279,7 @@
               "AuthorizationType": "NONE",
               "Integration": {
                 "IntegrationHttpMethod": "POST",
-                "Type": "AWS",
+                "Type": "AWS_PROXY",
                 "Uri": {
                   "Fn::Join": [
                     "",
@@ -461,126 +295,148 @@
                       ":lambda:path/2015-03-31/functions/",
                       {
                         "Fn::GetAtt": [
-                          "WorldLambdaFunction",
+                          "PokemonFuncLambdaFunction",
                           "Arn"
                         ]
                       },
                       "/invocations"
                     ]
                   ]
-                },
-                "PassthroughBehavior": "NEVER",
-                "RequestTemplates": {
-                  "application/json": "\n    #set( $body = $input.json(\"$\") )\n\n    \n  #define( $loop )\n    {\n    #foreach($key in $map.keySet())\n        #set( $k = $util.escapeJavaScript($key) )\n        #set( $v = $util.escapeJavaScript($map.get($key)).replaceAll(\"\\\\'\", \"'\") )\n        \"$k\":\n          \"$v\"\n          #if( $foreach.hasNext ) , #end\n    #end\n    }\n  #end\n\n  {\n    \"body\": $body,\n    \"method\": \"$context.httpMethod\",\n    \"principalId\": \"$context.authorizer.principalId\",\n    \"stage\": \"$context.stage\",\n\n    \"cognitoPoolClaims\" : {\n       \n       \"sub\": \"$context.authorizer.claims.sub\"\n    },\n\n    #set( $map = $context.authorizer )\n    \"enhancedAuthContext\": $loop,\n\n    #set( $map = $input.params().header )\n    \"headers\": $loop,\n\n    #set( $map = $input.params().querystring )\n    \"query\": $loop,\n\n    #set( $map = $input.params().path )\n    \"path\": $loop,\n\n    #set( $map = $context.identity )\n    \"identity\": $loop,\n\n    #set( $map = $stageVariables )\n    \"stageVariables\": $loop\n  }\n\n  ",
-                  "application/x-www-form-urlencoded": "\n    #define( $body )\n      {\n      #foreach( $token in $input.path('$').split('&') )\n        #set( $keyVal = $token.split('=') )\n        #set( $keyValSize = $keyVal.size() )\n        #if( $keyValSize >= 1 )\n          #set( $key = $util.escapeJavaScript($util.urlDecode($keyVal[0])) )\n          #if( $keyValSize >= 2 )\n            #set($val = $util.escapeJavaScript($util.urlDecode($keyVal[1])).replaceAll(\"\\\\'\",\"'\"))\n          #else\n            #set( $val = '' )\n          #end\n          \"$key\": \"$val\"#if($foreach.hasNext),#end\n        #end\n      #end\n      }\n    #end\n\n    \n  #define( $loop )\n    {\n    #foreach($key in $map.keySet())\n        #set( $k = $util.escapeJavaScript($key) )\n        #set( $v = $util.escapeJavaScript($map.get($key)).replaceAll(\"\\\\'\", \"'\") )\n        \"$k\":\n          \"$v\"\n          #if( $foreach.hasNext ) , #end\n    #end\n    }\n  #end\n\n  {\n    \"body\": $body,\n    \"method\": \"$context.httpMethod\",\n    \"principalId\": \"$context.authorizer.principalId\",\n    \"stage\": \"$context.stage\",\n\n    \"cognitoPoolClaims\" : {\n       \n       \"sub\": \"$context.authorizer.claims.sub\"\n    },\n\n    #set( $map = $context.authorizer )\n    \"enhancedAuthContext\": $loop,\n\n    #set( $map = $input.params().header )\n    \"headers\": $loop,\n\n    #set( $map = $input.params().querystring )\n    \"query\": $loop,\n\n    #set( $map = $input.params().path )\n    \"path\": $loop,\n\n    #set( $map = $context.identity )\n    \"identity\": $loop,\n\n    #set( $map = $stageVariables )\n    \"stageVariables\": $loop\n  }\n\n  "
-                },
-                "IntegrationResponses": [
-                  {
-                    "StatusCode": 200,
-                    "SelectionPattern": "",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 400,
-                    "SelectionPattern": "[\\s\\S]*\\[400\\][\\s\\S]*",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 401,
-                    "SelectionPattern": "[\\s\\S]*\\[401\\][\\s\\S]*",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 403,
-                    "SelectionPattern": "[\\s\\S]*\\[403\\][\\s\\S]*",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 404,
-                    "SelectionPattern": "[\\s\\S]*\\[404\\][\\s\\S]*",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 422,
-                    "SelectionPattern": "[\\s\\S]*\\[422\\][\\s\\S]*",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 500,
-                    "SelectionPattern": "[\\s\\S]*(Process\\s?exited\\s?before\\s?completing\\s?request|\\[500\\])[\\s\\S]*",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 502,
-                    "SelectionPattern": "[\\s\\S]*\\[502\\][\\s\\S]*",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  },
-                  {
-                    "StatusCode": 504,
-                    "SelectionPattern": "([\\s\\S]*\\[504\\][\\s\\S]*)|(^[Task timed out].*)",
-                    "ResponseParameters": {},
-                    "ResponseTemplates": {}
-                  }
-                ]
-              },
-              "MethodResponses": [
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 200
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 400
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 401
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 403
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 404
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 422
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 500
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 502
-                },
-                {
-                  "ResponseParameters": {},
-                  "ResponseModels": {},
-                  "StatusCode": 504
                 }
-              ]
+              },
+              "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1559293899676": {
+          "ApiGatewayMethodPokemonPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourcePokemon"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "PokemonFuncLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayMethodPokemonIdVarPut": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "PUT",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourcePokemonIdVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "PokemonFuncLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayMethodPokemonIdVarDelete": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "DELETE",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourcePokemonIdVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "PokemonFuncLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayDeployment1559461721636": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -589,53 +445,19 @@
               "StageName": "dev"
             },
             "DependsOn": [
-              "ApiGatewayMethodHelloGet",
-              "ApiGatewayMethodWorldGet"
+              "ApiGatewayMethodPokemonGet",
+              "ApiGatewayMethodPokemonIdVarGet",
+              "ApiGatewayMethodPokemonPost",
+              "ApiGatewayMethodPokemonIdVarPut",
+              "ApiGatewayMethodPokemonIdVarDelete"
             ]
           },
-          "HelloLambdaPermissionApiGateway": {
+          "PokemonFuncLambdaPermissionApiGateway": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
               "FunctionName": {
                 "Fn::GetAtt": [
-                  "HelloLambdaFunction",
-                  "Arn"
-                ]
-              },
-              "Action": "lambda:InvokeFunction",
-              "Principal": "apigateway.amazonaws.com",
-              "SourceArn": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      "Ref": "AWS::Partition"
-                    },
-                    ":execute-api:",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ":",
-                    {
-                      "Ref": "AWS::AccountId"
-                    },
-                    ":",
-                    {
-                      "Ref": "ApiGatewayRestApi"
-                    },
-                    "/*/*"
-                  ]
-                ]
-              }
-            }
-          },
-          "WorldLambdaPermissionApiGateway": {
-            "Type": "AWS::Lambda::Permission",
-            "Properties": {
-              "FunctionName": {
-                "Fn::GetAtt": [
-                  "WorldLambdaFunction",
+                  "PokemonFuncLambdaFunction",
                   "Arn"
                 ]
               },
@@ -674,16 +496,10 @@
               "Ref": "ServerlessDeploymentBucket"
             }
           },
-          "HelloLambdaFunctionQualifiedArn": {
+          "PokemonFuncLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "HelloLambdaVersionRvourncQeGBtGj9WHgkWukvgmP4AS1rqx9AlHYqYA"
-            }
-          },
-          "WorldLambdaFunctionQualifiedArn": {
-            "Description": "Current Lambda function version",
-            "Value": {
-              "Ref": "WorldLambdaVersionOPep3qMNhox9z5Fc9yBMThc3v2VNdVihPCPMozLf8U"
+              "Ref": "PokemonFuncLambdaVersiont2X9fhuXumuJfr78fmf6t2wYOHsfgiVFkQaaJ6lkFCQ"
             }
           },
           "ServiceEndpoint": {
@@ -746,88 +562,61 @@
         "basePath": "(none)",
         "stage": "dev",
         "certificateName": "apsls.carsome.my",
-        "createRoute53Record": true
+        "createRoute53Record": true,
+        "envFiles": [
+          "env.yml"
+        ],
+        "envEncryptionKeyId": {
+          "dev": "f204d1be-4b43-4759-afbd-4a5218401ffa"
+        }
       }
     },
     "plugins": [
-      "serverless-domain-manager",
-      "serverless-express",
+      "serverless-offline",
       "serverless-dotenv-plugin"
     ],
     "pluginsData": {},
     "functions": {
-      "hello": {
-        "handler": "handler.hello",
+      "pokemonFunc": {
+        "handler": "index.handler",
         "events": [
           {
             "http": {
-              "path": "hello",
-              "integration": "AWS",
+              "path": "pokemon",
               "method": "get",
-              "request": {
-                "passThrough": "NEVER"
-              },
-              "response": {
-                "statusCodes": {
-                  "200": {
-                    "pattern": ""
-                  },
-                  "400": {
-                    "pattern": "[\\s\\S]*\\[400\\][\\s\\S]*"
-                  },
-                  "401": {
-                    "pattern": "[\\s\\S]*\\[401\\][\\s\\S]*"
-                  },
-                  "403": {
-                    "pattern": "[\\s\\S]*\\[403\\][\\s\\S]*"
-                  },
-                  "404": {
-                    "pattern": "[\\s\\S]*\\[404\\][\\s\\S]*"
-                  },
-                  "422": {
-                    "pattern": "[\\s\\S]*\\[422\\][\\s\\S]*"
-                  },
-                  "500": {
-                    "pattern": "[\\s\\S]*(Process\\s?exited\\s?before\\s?completing\\s?request|\\[500\\])[\\s\\S]*"
-                  },
-                  "502": {
-                    "pattern": "[\\s\\S]*\\[502\\][\\s\\S]*"
-                  },
-                  "504": {
-                    "pattern": "([\\s\\S]*\\[504\\][\\s\\S]*)|(^[Task timed out].*)"
-                  }
-                }
-              }
+              "integration": "AWS_PROXY"
             }
-          }
-        ],
-        "name": "api-diff-dev-hello",
-        "package": {},
-        "memory": 1024,
-        "timeout": 6,
-        "runtime": "nodejs8.10",
-        "vpc": {}
-      },
-      "world": {
-        "handler": "handler.world",
-        "events": [
+          },
           {
             "http": {
-              "path": "world",
-              "integration": "AWS",
+              "path": "pokemon/{id}",
               "method": "get",
-              "request": {
-                "passThrough": "NEVER"
-              },
-              "response": {
-                "statusCodes": {
-                  "$ref": "$[\"service\"][\"functions\"][\"hello\"][\"events\"][0][\"http\"][\"response\"][\"statusCodes\"]"
-                }
-              }
+              "integration": "AWS_PROXY"
+            }
+          },
+          {
+            "http": {
+              "path": "pokemon",
+              "method": "post",
+              "integration": "AWS_PROXY"
+            }
+          },
+          {
+            "http": {
+              "path": "pokemon/{id}",
+              "method": "put",
+              "integration": "AWS_PROXY"
+            }
+          },
+          {
+            "http": {
+              "path": "pokemon/{id}",
+              "method": "delete",
+              "integration": "AWS_PROXY"
             }
           }
         ],
-        "name": "api-diff-dev-world",
+        "name": "api-test-dev-pokemonFunc",
         "package": {},
         "memory": 1024,
         "timeout": 6,
@@ -836,10 +625,10 @@
       }
     },
     "layers": {},
-    "artifact": "/Users/aa6my/aws/api-test/.serverless/api-diff.zip"
+    "artifact": "/Users/aa6my/aws/api-test/.serverless/api-test.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/api-diff/dev/1559293903473-2019-05-31T09:11:43.473Z",
-    "artifact": "api-diff.zip"
+    "artifactDirectoryName": "serverless/api-test/dev/1559461728105-2019-06-02T07:48:48.105Z",
+    "artifact": "api-test.zip"
   }
 }

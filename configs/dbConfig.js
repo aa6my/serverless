@@ -1,4 +1,5 @@
-// dbConfig.js
+require('dotenv').config({path:__dirname+'/./../.env'}) // Load variables from .env file
+
 const mysql = require('mysql')
 const pool  = mysql.createPool({
   host            : process.env.DB_HOST,
