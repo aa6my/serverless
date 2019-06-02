@@ -1,14 +1,18 @@
-#crsm-serverless
+# crsm-serverless
 
+- Install via NPM
+```
+npm install -g serverless
+```
 
-- Development
+- Development (http://localhost:3000/pokemon)
 ```
-$ serverless offline start --host 0.0.0.0
+$ sls offline start --host 0.0.0.0
 ```
 
-- Deploy LIVE
+- Deploy DEV (https://apsls.carsome.my)
 ```
-$ sls deploy --stage prod
+$ sls deploy --stage dev
 ```
 
 - Deploy DEV
@@ -16,3 +20,21 @@ $ sls deploy --stage prod
 $ sls deploy -v
 ```
 
+- Endpoint
+```
+get - /pokemon
+post - /pokemon
+get - /pokemon/{id}
+put - /pokemon/{id}
+delete - /pokemon/{id}
+```
+
+- Raw data
+```
+{
+    "name": "Bulbasaur",
+    "height": 3,
+    "weight": 67,
+    "avatar": "http://test.com/image.png"
+}
+```

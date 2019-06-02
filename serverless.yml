@@ -11,7 +11,8 @@ custom:
   customDomain:
     domainName: ${env:DOMAIN_NAME}
     basePath: "(none)"
-    stage: ${env:STAGE}
+    # stage: ${env:STAGE}
+    stage: ${opt:stage, self:provider.stage}
     certificateName: "apsls.carsome.my"
     createRoute53Record: true
     envFiles: #YAML files used to create .env file
