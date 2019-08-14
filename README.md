@@ -38,3 +38,12 @@ delete - /pokemon/{id}
     "avatar": "http://test.com/image.png"
 }
 ```
+
+- Reference
+```
+SSL certificates must be issued in the US East (North Virginia) region
+```
+```
+https://medium.com/@maciejtreder/custom-domain-in-aws-api-gateway-a2b7feaf9c74
+https://dev.to/sagar/build-a-restful-api-with-the-serverless-framework-ene
+```
